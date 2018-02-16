@@ -1,7 +1,7 @@
 # Makefile for nbench, December 11, 1997, Uwe F. Mayer <mayer@tux.org>
 # Updated February 18, 2003
 
-default: nbench
+default: nbench.exe
 
 ##########################################################################
 #   If you are using gcc-2.7.2.3 or earlier:
@@ -22,28 +22,28 @@ default: nbench
 CC = gcc
 
 # generic options for gcc
-CFLAGS = -s -static -Wall -O3
+CFLAGS = -s -Zomf -Wall -O3
 
 # if your gcc lets you do it, then try this one
-#CFLAGS = -s -static -Wall -O3 -fomit-frame-pointer -funroll-loops
+#CFLAGS = -s -Zomf -Wall -O3 -fomit-frame-pointer -funroll-loops
 
 # for gcc on an older Pentium type processor you can try the following
-#CFLAGS = -s -static -O3 -fomit-frame-pointer -Wall -m486 \
+#CFLAGS = -s -Zomf -O3 -fomit-frame-pointer -Wall -m486 \
 #	-fforce-addr -fforce-mem -falign-loops=2 -falign-functions=2 \
 #	-falign-jumps=2 -funroll-loops
 
 # for a newer gcc on a newer Pentium type processor you can try the following
-#CFLAGS = -s -static -O3 -fomit-frame-pointer -Wall -march=i686 \
+#CFLAGS = -s -Zomf -O3 -fomit-frame-pointer -Wall -march=i686 \
 #	-fforce-addr -fforce-mem -falign-loops=2 -falign-functions=2 \
 #	-falign-jumps=2 -funroll-loops
 
 # for a newer gcc on an Athlon XP type processor you can try the following
-#CFLAGS = -s -static -O3 -fomit-frame-pointer -Wall -march=athlon-xp \
+#CFLAGS = -s -Zomf -O3 -fomit-frame-pointer -Wall -march=athlon-xp \
 #	-fforce-addr -fforce-mem -falign-loops=2 -falign-functions=2 \
 #	-falign-jumps=2 -funroll-loops
 
 # For debugging using gcc
-#CFLAGS = -g -O3 -Wall -DDEBUG
+#CFLAGS = -Zomf -g -O3 -Wall -DDEBUG
 
 ##########################################################################
 # For Linux machines with more than one binary format.
@@ -138,16 +138,16 @@ sysspec.o: sysspec.h sysspec.c nmglobal.h pointer.h Makefile
 	$(CC) $(MACHINE) $(DEFINES) $(CFLAGS)\
 		-c sysspec.c
 
-nbench: emfloat.o misc.o nbench0.o nbench1.o sysspec.o hardware.o
+nbench.exe: emfloat.o misc.o nbench0.o nbench1.o sysspec.o hardware.o
 	$(CC) $(MACHINE) $(DEFINES) $(CFLAGS) $(LINKFLAGS)\
 		emfloat.o misc.o nbench0.o nbench1.o sysspec.o hardware.o\
-		-o nbench -lm
+		-o nbench.exe -lm
 
 ##########################################################################
 
 clean:
-	- /bin/rm -f *.o *~ \#* core a.out hello sysinfo.c sysinfoc.c \
-		 bug pointer pointer.h debugbit.dat
+	- rm -f *.o *~ \#* core a.out hello.exe sysinfo.c sysinfoc.c \
+		 bug pointer pointer.exe pointer.h debugbit.dat
 
 mrproper: clean
-	- /bin/rm -f nbench
+	- rm -f nbench.exe
